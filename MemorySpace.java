@@ -139,17 +139,18 @@ public class MemorySpace {
 			return;
 		}
 		Node current = freeList.getFirst();
-		freeList.sort();
+		Node previousNode = null;
+
 
 		while (current != null && current.next != null) {
-			MemoryBlock currentNodeBlock = current.block;
+			MemoryBlock currentBlock = current.block;
 			MemoryBlock nextBlock = current.next.block;
-			if ((currentNodeBlock.baseAddress + currentNodeBlock.length) == nextBlock.baseAddress) {
-				freeList.remove(current.next);
-				currentNodeBlock.length += nextBlock.length;
-				
+			if ((currentBlock.baseAddress + currentBlock.length) == nextBlock.baseAddress) {
+				currentBlock.length += nextBlock.length;
+				freeList.remove(current.next);				
 			} 
 			else {
+				previousNode = current;
 				current = current.next;
 			}
 		  }
