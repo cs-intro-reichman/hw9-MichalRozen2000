@@ -67,13 +67,13 @@ public class MemorySpace {
 			}
 			current = current.next;
 		}
-		if (match != null){
+		if (match != null) {
 			MemoryBlock toAlock = new MemoryBlock(match.block.baseAddress, length);
 			allocatedList.addLast(toAlock);
 			match.block.length -= length;
 			int address = match.block.baseAddress;
 			match.block.baseAddress += length;
-			if(match.block.length == 0){
+			if (match.block.length == 0) {
 				freeList.remove(match);
 			}
 			return address;
