@@ -58,14 +58,14 @@ public class MemorySpace {
 	 * @return the base address of the allocated block, or -1 if unable to allocate
 	 */
 	public int malloc(int length) {	
-		Node currentNode = freeList.getFirst();
+		Node current = freeList.getFirst();
 		Node match = null;
-		while (currentNode != null) {
-			if (currentNode.block.length >= length) {
-				match = currentNode;
+		while (current != null) {
+			if (current.block.length >= length) {
+				match = current;
 				break;
 			}
-			currentNode = currentNode.next;
+			current = current.next;
 		}
 
 		if (match != null) {
@@ -77,7 +77,6 @@ public class MemorySpace {
 			if (match.block.length == 0) {
 				freeList.remove(match);
 			}
-				
 			return address;
 		}
 		
@@ -103,19 +102,22 @@ public class MemorySpace {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
-		   	Node currentNode = allocatedList.getNode(0);
-			Node wantedNode = null;
-			while (currentNode != null) {	
-				if (currentNode.block.baseAddress == address) {
-					wantedNode = currentNode;
+		   	Node current = allocatedList.getNode(0);
+			Node match = null;
+			while (current != null) {	
+				if (current.block.baseAddress == address) {
+					match = current;
 					break;
 				}
-				currentNode = currentNode.next;
+				current = current.next;
 			}
 
-			if (wantedNode != null) {
-				freeList.addLast(wantedNode.block);
-				allocatedList.remove(wantedNode);
+			if (match == null) {
+				return;
+			} 
+			else {
+				freeList.addLast(match.block);
+				allocatedList.remove(match.block);
 			}
 	}
 	
@@ -136,19 +138,19 @@ public class MemorySpace {
 		if (freeList.getSize() <= 1) {
 			return;
 		}
-		Node currentNode = freeList.getFirst();
+		Node current = freeList.getFirst();
 		freeList.sort();
 
-		while (currentNode != null && currentNode.next != null) {
-			MemoryBlock currentNodeBlock = currentNode.block;
-			MemoryBlock nextBlock = currentNode.next.block;
+		while (current != null && current.next != null) {
+			MemoryBlock currentNodeBlock = current.block;
+			MemoryBlock nextBlock = current.next.block;
 			if ((currentNodeBlock.baseAddress + currentNodeBlock.length) == nextBlock.baseAddress) {
-				freeList.remove(currentNode.next);
+				freeList.remove(current.next);
 				currentNodeBlock.length += nextBlock.length;
 				
 			} 
 			else {
-				currentNode = currentNode.next;
+				current = current.next;
 			}
 		  }
 	}
