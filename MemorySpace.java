@@ -138,20 +138,18 @@ public class MemorySpace {
 		if (freeList.getSize() <= 1) {
 			return;
 		}
-		Node current = freeList.getFirst();
-		Node previousNode = null;
-
-
-		while (current != null && current.next != null) {
-			MemoryBlock currentBlock = current.block;
-			MemoryBlock nextBlock = current.next.block;
-			if ((currentBlock.baseAddress + currentBlock.length) == nextBlock.baseAddress) {
-				currentBlock.length += nextBlock.length;
-				freeList.remove(current.next);				
+		freeList.sort();
+		Node curr = freeList.getFirst();
+		while (curr != null && curr.next != null) {
+			MemoryBlock currBlock = curr.block;
+			MemoryBlock nextBlock = curr.next.block;
+	
+			if ((currBlock.baseAddress + currBlock.length) == nextBlock.baseAddress) {
+				currBlock.length += nextBlock.length;
+				freeList.remove(curr.next);
 			} 
 			else {
-				previousNode = current;
-				current = current.next;
+				curr = curr.next;
 			}
 		  }
 	}
