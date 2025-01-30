@@ -1,4 +1,6 @@
+import java.util.ListIterator;
 
+import org.w3c.dom.Node;
 
 /**
  * Represents a list of Nodes. 
@@ -16,6 +18,30 @@ public class LinkedList {
 		first = null;
 		last = first;
 		size = 0;
+	}
+
+	/**
+	 * Gets the first node of the list
+	 * @return The first node of the list.
+	 */		
+	public Node getFirst() {
+		return this.first;
+	}
+
+	/**
+	 * Gets the last node of the list
+	 * @return The last node of the list.
+	 */		
+	public Node getLast() {
+		return this.last;
+	}
+	
+	/**
+	 * Gets the current size of the list
+	 * @return The size of the list.
+	 */		
+	public int getSize() {
+		return this.size;
 	}
 	
 	/**
