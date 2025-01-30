@@ -58,16 +58,14 @@ public class LinkedList {
 			return null;
 		}
 		Node current = first;
-		int nodeIndex = 0;
-
-		while (current != null) {
-			if (nodeIndex == index){
+		int nodePlacer = 0;
+		while (current!=null) {
+			if (nodePlacer==index){
 				return current;
 			}
 			current = current.next;
-			nodeIndex++;
+			nodePlacer++;
 		}
-
 		return null;
 	}
 	
@@ -95,27 +93,26 @@ public class LinkedList {
 		if (index < 0 || index > size){
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
-		} 
+		}
 		else if (first == null) {
 			first = newNode;
 			last = newNode;
 		} 
 		else if (index == 0) {
-			newNode.next = first;
-			first = newNode;
+			newNode.next=first;
+			first=newNode;
 		} 
 		else if (index == size) {
 			last.next = newNode;
 			last=newNode;
 		} 
 		else {
-			Node currentNode = getNode(index-1);
-			Node pushNode = currentNode.next;
-			currentNode.next = newNode;
+			Node current = getNode(index-1);
+			Node pushNode = current.next;
+			current.next = newNode;
 			newNode.next = pushNode;
 		}
-
-		size++;
+		size++;	
 	}
 
 	/**
@@ -150,7 +147,7 @@ public class LinkedList {
 	 *         if index is negative or greater than or equal to size
 	 */
 	public MemoryBlock getBlock(int index) {
-		if (index < 0 || index > size || first == null) {
+		if ( index < 0 || index > size || first == null){
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
@@ -166,20 +163,18 @@ public class LinkedList {
 	 * @return the index of the block, or -1 if the block is not in this list
 	 */
 	public int indexOf(MemoryBlock block) {
-		if (first == null){
+		if (first == null) {
 			return -1;
 		}
-		Node currentNode = first;
-		int count = 0;
-		while (currentNode != null){
-			if (currentNode.block.equals(block)) {
-				return count;
+		Node current = first;
+		int countIndex = 0;
+		while (current != null) {
+			if (current.block.equals(block)) {
+				return countIndex;
 			}
-
-			count++;
-			currentNode = currentNode.next;
+			countIndex++;
+			current = current.next;
 		}
-
 		return -1;
 	}
 
@@ -194,29 +189,26 @@ public class LinkedList {
 			System.out.println("ERROR NullPointerException!");
 			return;
 		}
-
-			if (first.equals(null)) {
-			return; 
-			}
-			else if (size == 1 && first.equals(node)) {
+		if (first.equals(null)) {
+			return;
+		} 
+		else if (size == 1 && first.equals(node)) {
 			size = 0;
 			first = null;
 			last = null;
 			return;
-			}
-
+		}  
 		if (node.equals(first)) {
 			first = first.next;
 			size --;
-			if (size == 1) {
+			if(size == 1) {
 				last = first;
 			}
-
 			return;
 		} 
 		Node current = first;
 		while (current.next != null) {
-			if (current.next.equals(node) && node.equals(last)) {
+			if (current.next.equals(node) && node.equals(last)){
 				current.next = null; 
 				size --;
 				last = current;
@@ -225,7 +217,7 @@ public class LinkedList {
 				}
 				break;
 			}
-			if (current.next.equals(node)) {
+			if (current.next.equals(node)){
 				current.next=current.next.next;
 				size--;
 				if (size == 1){
@@ -234,7 +226,7 @@ public class LinkedList {
 				break;
 			} 
 				current = current.next;
-     }
+		}
 	}
 
 	/**
@@ -245,15 +237,13 @@ public class LinkedList {
 	 *         if index is negative or greater than or equal to size
 	 */
 	public void remove(int index) {
-		// also equals to size because size>index
 		if ( index < 0 || index >= size){
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
-		// empty list
 		if (first == null){
-			// do nothing
-		} else {
+		} 
+		else {
 			remove(getNode(index));
 		}
 	}
@@ -276,7 +266,7 @@ public class LinkedList {
 	/**
 	 * Returns an iterator over this list, starting with the first element.
 	 */
-	public ListIterator iterator(){
+	public ListIterator iterator() {
 		return new ListIterator(first);
 	}
 	
@@ -284,28 +274,26 @@ public class LinkedList {
 	 * A textual representation of this list, for debugging.
 	 */
 	public String toString() {
-
-		String str = "";
+		String result = "";
     	Node current = first;
-    	for (int i = 0 ; i < size ; i++) {
-        	str += current.block.toString() + " "; 
+    	for(int i = 0 ; i < size ; i ++) {
+        	result += current.block.toString() + " "; 
         	current = current.next; 
 		}
-    	return str;
+    	return result;
     }
-
-	public void sort (){
+	public void sort () {
 		for (int i = 0; i < size - 1; i++) {
 			for (int j = 0; j < size - i - 1; j++) {
 				Node current = getNode(j);
 				Node next = current.next;
-				if (current.block.baseAddress > next.block.baseAddress){
+				if (current.block.baseAddress > next.block.baseAddress) {
 					MemoryBlock temp = current.block;
 					current.block = next.block;
 					next.block = temp;
 
 				}
-			 }
+			}
 			
 		}
 	}
