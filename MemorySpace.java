@@ -67,13 +67,13 @@ public class MemorySpace {
 			}
 			current = current.next;
 		}
-		if (match != null) {
+		if (match != null){
 			MemoryBlock toAlock = new MemoryBlock(match.block.baseAddress, length);
 			allocatedList.addLast(toAlock);
 			match.block.length -= length;
 			int address = match.block.baseAddress;
 			match.block.baseAddress += length;
-			if (match.block.length == 0) {
+			if (match.block.length == 0){
 				freeList.remove(match);
 			}
 			return address;
@@ -125,11 +125,11 @@ public class MemorySpace {
 	 * In this implementation Malloc does not call defrag.
 	 */
 	public void defrag() {
-		if (freeList.getSize() <= 1) {
+		if (freeList == null) {
 			return;
-		}
-		freeList.sort();
-		Node current = freeList.getFirst();
+		} 	else {
+			Node current = freeList.getFirst();
+			freeList.sort();;
 		while (current != null && current.next != null) {
 			MemoryBlock currentBlock = current.block;
 			MemoryBlock nextBlock = current.next.block;
@@ -141,6 +141,7 @@ public class MemorySpace {
 			else {
 				current = current.next;
 			}
-		}
+		  }
+		} 
 	}
 }
